@@ -34,13 +34,32 @@ const users =[
 
 const uri = "mongodb+srv://dbuser375:CWtogxjMuxEl0p6Y@cluster0.ixszr3u.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
-client.connect(err => {
-  const collection = client.db("Simplenode").collection("users");
-  // perform actions on the collection object
-  console.log('db connected');
-  client.close();
-});
+async function run(){
+try{
+const userCollection = client.db('SimpleNode').collection('user');
+const user={name: 'doramon',email:'doramon@gmail.com'}
+// const result =await userCollection.insertOne(user);
+// console.log(result)
 
+app.post('/users',async(req,res)=>{
+    console.log('post api called');
+    const user = req.body;
+//    user.id = users.length +1;
+//    users.push(user)
+//    console.log(user);
+const result = await userCollection.insertOne(user);
+console.log(result);
+user.id = result.insertedId;     
+   res.send(user)
+})
+}
+finally{
+    // await client.close();
+}
+}
+run().catch(err=>console.log(err)
+
+)
 
 
 
@@ -48,14 +67,14 @@ app.get('/users',(req,res)=>{
 res.send(users);
 })
 
-app.post('/users',(req,res)=>{
-    console.log('post api called');
-    const user = req.body;
-   user.id = users.length +1;
-   users.push(user)
-   console.log(user);
-   res.send(user)
-})
+// app.post('/users',(req,res)=>{
+//     console.log('post api called');
+//     const user = req.body;
+//    user.id = users.length +1;
+//    users.push(user)
+//    console.log(user);
+//    res.send(user)
+// })
 
 
 
