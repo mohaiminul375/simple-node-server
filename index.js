@@ -53,7 +53,7 @@ app.post('/users',async(req,res)=>{
 //    console.log(user);
 const result = await userCollection.insertOne(user);
 console.log(result);
-user.id = result.insertedId;     
+user._id = result.insertedId;     
    res.send(user)
 })
 }
