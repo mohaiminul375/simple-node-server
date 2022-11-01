@@ -37,10 +37,14 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function run(){
 try{
 const userCollection = client.db('SimpleNode').collection('user');
-const user={name: 'doramon',email:'doramon@gmail.com'}
+// const user={name: 'doramon',email:'doramon@gmail.com'}
 // const result =await userCollection.insertOne(user);
 // console.log(result)
-
+app.get('/users', async(req,res)=>{
+    const cursor = userCollection.find({})
+    const users = await cursor.toArray();
+    res.send(users)
+    })
 app.post('/users',async(req,res)=>{
     console.log('post api called');
     const user = req.body;
@@ -63,9 +67,9 @@ run().catch(err=>console.log(err)
 
 
 
-app.get('/users',(req,res)=>{
-res.send(users);
-})
+// app.get('/users',(req,res)=>{
+// res.send(users);
+// })
 
 // app.post('/users',(req,res)=>{
 //     console.log('post api called');
